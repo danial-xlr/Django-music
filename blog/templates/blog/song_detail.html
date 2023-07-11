@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container"style="width: 100%;">
+        <h1 class="my-4">{{ song.title }}</h1>
+        <div class="card mb-4" style="width: 100%;">
+            <!-- <img src="{% static 'path_to_song_image.jpg' %}" class="card-img-top" alt="Song Image"> -->
+            <div class="card-body text-center" style="width: 100%;">
+                <h5 class="card-title">{{ song.title }}</h5>
+                <p class="card-text" >Publisher: <a type="button" class="btn btn-info" href="{{ song.user.profile.get_absolute_url }}">{{ song.user.username }}</a></p>
+                <p class="card-text">{{ song.artist }}</p>
+                <p class="card-text">{{ song.genre }}</p>
+                <audio controls style="width: 100%;">
+                    <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <!-- Additional song details can be displayed here -->
+            </div>
+        </div>
+        <h3>Comments</h3>
+        {% for comment in comments %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text">{{ comment.content }}</p>
+                    <p class="card-text">By: {{ comment.user.username }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <h3>Add a Comment</h3>
+            <form method="POST"style="width: 10%;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        {% else %}
+            <p>Please <button type="button" class="btn btn-warning" href="{% url 'user_login' %}">Log in</button> to add a comment.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{{ profile.name }}'s Profile</h1>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Name: {{ profile.name }}</h5>                
+                <p class="card-text">Age: {{ profile.age }}</p>
+                <p class="card-text">Intro: {{ profile.intro }}</p>
+            </div>
+        </div>
+
+        <h2 class="my-4">Published Songs</h2>
+        {% for song in songs %}
+            <div class="card mb-3 " style="width: 100%;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ song.title }}</h5>
+                    <p class="card-text">Artist: {{ song.artist }}</p>
+                    <p class="card-text">Genre: {{ song.genre }}</p>
+                    <audio controls style="width: 100%;">
+                        <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        {% empty %}
+            <p>No songs published yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

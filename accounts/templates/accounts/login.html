@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block custom_tags %}
+<style>
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+</style>
+{% endblock %}
+ {% block content%}
+ <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="col-md-8 col-lg-7 col-xl-6">
+          <img src="/static/img/login.svg" class="img-fluid" alt="Phone image">
+        </div>
+        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+          <form action="." method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p   }}
+          
+            <button type="submit"  value="Login" class="btn btn-primary btn-lg btn-block">Sign in</button>         
+           
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+ {% endblock %}
