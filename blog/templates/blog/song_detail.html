@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container"style="width: 100%;">
         <h1 class="my-4">{{ song.title }}</h1>
-        <div class="card mb-4" style="width: 100%;">
+        <div class="card mb-4" style="width: 100%;color: #000000; background-image: url('/static/img/c.jpg'); background-size: cover;">
             <!-- <img src="{% static 'path_to_song_image.jpg' %}" class="card-img-top" alt="Song Image"> -->
             <div class="card-body text-center" style="width: 100%;">
                 <h5 class="card-title">{{ song.title }}</h5>
@@ -20,7 +20,7 @@
         </div>
         <h3>Comments</h3>
         {% for comment in comments %}
-            <div class="card mb-3">
+            <div class="card mb-3 " style="color: #000000;">
                 <div class="card-body">
                     <p class="card-text">{{ comment.content }}</p>
                     <p class="card-text">By: {{ comment.user.username }}</p>
@@ -37,7 +37,7 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         {% else %}
-            <p>Please <button type="button" class="btn btn-warning" href="{% url 'user_login' %}">Log in</button> to add a comment.</p>
+            <p>Please <a class="btn btn-warning" href="{% url 'user_login' %}">Log in</a> to add a comment.</p>
         {% endif %}
     </div>
 {% endblock %}

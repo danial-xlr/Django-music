@@ -1,21 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
     <div class="container justify-content-center my-4 mb-5">
+      <div class="container my-4 text-center">
+        <img src="/static/img/a.jpg" class="img-fluid" alt="Welcome Photo">
+      </div>
         <h1 class="my-4">Latest Songs</h1>
         <div class="row justify-content-center m-5 pb-5" >
             {% for song in all_songs %}
                 <div class="col-md-4 m-5 pb-5" style="width: 100%;">
-                    <div class="card" style="width: 100%;">
+                    <div class="card" style="width: 100%; color: #000000; background-image: url('/static/img/c.jpg'); background-size: cover;">
                         <!-- <img src="{% static 'path_to_song_image.jpg' %}" class="card-img-top" alt="Song Image"> -->
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ song.title }}</h5>
                             <p class="card-text">{{ song.artist }}</p>
-                            <audio controls style="width: 100%;">
+                            <audio controls id="audio_{{ song.id }}" style="width: 100%;">
                                 <source src="{{ song.audio_file.url }}" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-secondary" onclick="previousTrack({{ song.id }})">Previous</button>
+                                <button class="btn btn-secondary" onclick="nextTrack({{ song.id }})">Next</button>
+                            </div>
                             <a href="{{ song.get_absolute_url }}" class="btn btn-primary">View Details</a>
                         </div>
                     </div>
@@ -23,4 +29,34 @@
             {% endfor %}
         </div>
     </div>
+    <script>
+        // Get all audio elements
+        const audioElements = document.querySelectorAll("audio");
+
+        // Add event listeners to handle audio playback
+        audioElements.forEach((audio) => {
+            audio.addEventListener("play", (event) => {
+                // Pause all other audio elements
+                audioElements.forEach((otherAudio) => {
+                    if (otherAudio !== audio) {
+                        otherAudio.pause();
+                    }
+                });
+            });
+        });
+
+        function nextTrack(currentId) {
+            const currentIndex = Array.from(audioElements).findIndex((audio) => audio.id === `audio_${currentId}`);
+            const nextIndex = (currentIndex + 1) % audioElements.length;
+            audioElements[nextIndex].play();
+        }
+
+        // Function to play the previous track
+        function previousTrack(currentId) {
+            const currentIndex = Array.from(audioElements).findIndex((audio) => audio.id === `audio_${currentId}`);
+            const previousIndex = (currentIndex - 1 + audioElements.length) % audioElements.length;
+            audioElements[previousIndex].play();
+        }
+    </script>
+    
 {% endblock %}
